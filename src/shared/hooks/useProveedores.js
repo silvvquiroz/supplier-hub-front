@@ -3,7 +3,7 @@ import { useQuery } from '@tanstack/react-query'
 // In dev, Vite proxies /api to the backend (avoids CORS). In production, either
 // configure your host to proxy /api to the same backend or set VITE_API_BASE.
 const API_BASE = import.meta.env.VITE_API_BASE ?? ''
-const API_URL = `${API_BASE}/api/proveedor/all`
+const API_URL = `${API_BASE}/api/proveedor`
 
 function formatFecha(isoString) {
   if (!isoString) return ''
@@ -36,26 +36,48 @@ function mapProveedorToRow(proveedor) {
   }
 }
 
-async function fetchProveedores() {
-  const res = await fetch(API_URL)
+async function fetchProveedores(page, pageSize) {
+  const params = new URLSearchParams({ page: String(page), pageSize: String(pageSize) })
+  const url = `${API_URL}?${params.toString()}`
+  const res = await fetch(url)
   if (!res.ok) throw new Error(`HTTP ${res.status}: ${res.statusText}`)
   const data = await res.json()
-  console.log(data)
-  return Array.isArray(data) ? data : []
+  const list = Array.isArray(data?.proveedores) ? data.proveedores : []
+  return {
+    proveedores: list,
+    totalProveedores: data?.totalProveedores ?? 0,
+    totalPages: data?.totalPages ?? 0,
+    currentPage: data?.currentPage ?? 1,
+  }
+}
+
+function getSearchParams() {
+  const search = typeof window !== 'undefined' ? window.location.search : ''
+  const params = new URLSearchParams(search)
+  return {
+    page: params.get('page') ?? '1',
+    pageSize: params.get('pageSize') ?? '3',
+  }
 }
 
 export function useProveedores() {
+  const { page, pageSize } = getSearchParams()
+
   const query = useQuery({
-    queryKey: ['proveedores'],
-    queryFn: fetchProveedores,
+    queryKey: ['proveedores', page, pageSize],
+    queryFn: () => fetchProveedores(page, pageSize),
   })
 
-  const proveedores = Array.isArray(query.data)
-    ? query.data.map(mapProveedorToRow)
-    : []
+  const rawList = query.data?.proveedores ?? []
+  const proveedores = rawList.map(mapProveedorToRow)
 
   return {
     proveedores,
+    totalProveedores: query.data?.totalProveedores ?? 0,
+    totalPages: query.data?.totalPages ?? 0,
+    currentPage: query.data?.currentPage ?? 1,
+    page: Number(page),
+    pageSize: Number(pageSize),
     isLoading: query.isLoading,
     isError: query.isError,
     error: query.error,

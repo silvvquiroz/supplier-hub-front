@@ -14,7 +14,7 @@ const SUPPLIER_COLUMNS = [
 ]
 
 function App() {
-  const { proveedores, isLoading, isError, error } = useProveedores()
+  const { proveedores, isLoading, isError, error, totalPages, currentPage, pageSize } = useProveedores()
 
   return (
     <main>
@@ -41,14 +41,6 @@ function App() {
               <option value="1">Perú</option>
               <option value="2">USA</option>
               <option value="3">España</option>
-            </select>
-            <select>
-              <option value="" disabled defaultValue="">
-                Filtrar por país
-              </option>
-              <option value="1">Riesgo #1</option>
-              <option value="2">Riesgo #2</option>
-              <option value="3">Riesgo #3</option>
             </select>
           </form>
         </div>
@@ -80,6 +72,9 @@ function App() {
             columns={SUPPLIER_COLUMNS}
             rows={proveedores}
             isLoading={isLoading}
+            totalPages={totalPages}
+            currentPage={currentPage}
+            pageSize={pageSize}
           />
         </div>
       </section>

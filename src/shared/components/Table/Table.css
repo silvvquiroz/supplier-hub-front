@@ -54,4 +54,16 @@
             }
         }
     }
+
+    & > .Table__pagination{
+        display: flex;
+        flex-flow: row wrap;
+        gap: 12px;
+    }
+
+    & .Table__pagination-current{
+        background: var(--color-gray-4);
+        opacity: .5;
+        pointer-events: none;
+    }
 }

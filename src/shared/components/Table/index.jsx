@@ -8,6 +8,9 @@ export function Table({
   rows,
   isLoading,
   renderAction = () => DEFAULT_ACTION_LABEL,
+  totalPages = 0,
+  currentPage = 1,
+  pageSize,
 }) {
   return (
     <div className="Table">
@@ -55,6 +58,28 @@ export function Table({
           </tbody>
         </table>
       </div>
+      {(totalPages > 0 || pageSize != null) && (
+        <div className="Table__pagination">
+          {Array.from({ length: Math.max(0, totalPages) }, (_, i) => {
+            const page = i + 1
+            const search = new URLSearchParams()
+            search.set('page', String(page))
+            if (pageSize != null) search.set('pageSize', String(pageSize))
+            const href = `/?${search.toString()}`
+            const isCurrent = page === currentPage
+            return (
+              <a
+                key={page}
+                className={`Button PrimaryButton Gray2BorderedButton${isCurrent ? ' Table__pagination-current' : ''}`}
+                href={href}
+                aria-current={isCurrent ? 'page' : undefined}
+              >
+                {page}
+              </a>
+            )
+          })}
+        </div>
+      )}
     </div>
   )
 }
