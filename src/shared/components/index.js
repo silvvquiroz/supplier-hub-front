@@ -1,4 +1,5 @@
 export { AddProviderDialog } from './AddProviderDialog'
 export { Dialog } from './Dialog'
 export { Metric } from './Metric'
+export { ScreeningDialog } from './ScreeningDialog'
 export { Table } from './Table'

@@ -1,5 +1,6 @@
-import { AddProviderDialog, Metric, Table } from './shared/components'
+import { AddProviderDialog, Metric, ScreeningDialog, Table } from './shared/components'
 import { useProveedores } from './shared/hooks/useProveedores'
+import { useState } from 'react'
 
 const SUPPLIER_COLUMNS = [
   { key: 'razonSocial', label: 'Razon social' },
@@ -15,6 +16,44 @@ const SUPPLIER_COLUMNS = [
 
 function App() {
   const { proveedores, isLoading, isError, error, totalPages, currentPage, pageSize } = useProveedores()
+  const [selectedProvider, setSelectedProvider] = useState({ id: null, name: null })
+
+  const handleScreening = (provider) => {
+    setSelectedProvider(provider)
+    document.getElementById('ScreeningDialog')?.showPopover?.()
+  }
+
+  const handleScreeningSubmit = async (payload) => {
+    // Aquí puedes llamar a tu endpoint de screening
+    console.log('Screening payload:', payload)
+  }
+
+  const renderAction = (row) => (
+    <div style={{ display: 'flex', gap: '8px', justifyContent: 'center' }}>
+      <button
+        className="Button PrimaryButton Gray2BorderedButton"
+        popoverTarget="EditProviderDialog"
+        onClick={() => console.log('Edit:', row)}
+        title="Editar proveedor"
+      >
+        Editar
+      </button>
+      <button
+        className="Button PrimaryButton Gray2BorderedButton"
+        onClick={() => console.log('Delete:', row)}
+        title="Eliminar proveedor"
+      >
+        Eliminar
+      </button>
+      <button
+        className="Button PrimaryButton BlueButton"
+        onClick={() => handleScreening({ id: row.id, name: row.razonSocial })}
+        title="Ejecutar screening"
+      >
+        Screening
+      </button>
+    </div>
+  )
 
   return (
     <main>
@@ -75,8 +114,10 @@ function App() {
             totalPages={totalPages}
             currentPage={currentPage}
             pageSize={pageSize}
+            renderAction={renderAction}
           />
         </div>
+        <ScreeningDialog provider={selectedProvider} onSubmit={handleScreeningSubmit} />
       </section>
       <footer>
         <p>

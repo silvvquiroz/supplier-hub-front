@@ -37,7 +37,7 @@ export function AddProviderDialog() {
       <button
         type="button"
         className="Button PrimaryButton BlueButton"
-        popovertarget={ADD_PROVIDER_DIALOG_ID}
+        popoverTarget={ADD_PROVIDER_DIALOG_ID}
       >
         <span>Añadir Proveedor</span>
       </button>
@@ -144,7 +144,7 @@ export function AddProviderDialog() {
             <button
               className="Button PrimaryButton RedButton"
               type="button"
-              popovertarget={ADD_PROVIDER_DIALOG_ID}
+              popoverTarget={ADD_PROVIDER_DIALOG_ID}
             >
               Cancelar
             </button>

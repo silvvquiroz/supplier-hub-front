@@ -1,0 +1,176 @@
+.ScreeningDialog {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  width: 100%;
+}
+
+/* Tabs */
+.ScreeningDialog__tabs {
+  display: flex;
+  gap: 8px;
+  border-bottom: 2px solid var(--color-gray-2);
+  overflow-x: auto;
+}
+
+.ScreeningDialog__tab {
+  padding: 12px 20px;
+  border: none;
+  background: transparent;
+  cursor: pointer;
+  font-size: var(--font-size-sm);
+  color: var(--color-gray-1);
+  border-bottom: 3px solid transparent;
+  transition: color 0.2s, border-color 0.2s;
+  white-space: nowrap;
+}
+
+.ScreeningDialog__tab:hover {
+  color: var(--color-primary);
+}
+
+.ScreeningDialog__tab--active {
+  color: var(--color-primary);
+  border-bottom-color: var(--color-primary);
+  font-weight: 600;
+}
+
+/* Content */
+.ScreeningDialog__content {
+  position: relative;
+  min-height: 300px;
+  max-height: 500px;
+  overflow-y: auto;
+}
+
+.ScreeningDialog__panel {
+  display: none;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.ScreeningDialog__panel--active {
+  display: flex;
+}
+
+/* Header con contador y botón */
+.ScreeningDialog__header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 16px;
+}
+
+.ScreeningDialog__resultCount {
+  flex: 1;
+  font-size: var(--font-size-sm);
+  color: var(--color-gray-1);
+}
+
+.ScreeningDialog__resultCount span {
+  font-weight: 600;
+  color: var(--color-primary);
+}
+
+.ScreeningDialog__executeButton {
+  white-space: nowrap;
+  padding: 8px 16px;
+  font-size: var(--font-size-sm);
+}
+
+/* Results Area */
+.ScreeningDialog__results {
+  padding: 16px;
+  background: var(--color-gray-3);
+  border-radius: 8px;
+  min-height: 250px;
+  max-height: 400px;
+  overflow-y: auto;
+}
+
+.ScreeningDialog__resultData pre {
+  margin: 0;
+  padding: 12px;
+  background: white;
+  border-radius: 6px;
+  font-size: var(--font-size-xs);
+  overflow-x: auto;
+  line-height: 1.4;
+  color: var(--color-gray-1);
+  max-height: 350px;
+  overflow-y: auto;
+}
+
+/* Tabla de resultados */
+.ScreeningDialog__table {
+  width: 100%;
+  overflow-x: auto;
+}
+
+.ScreeningDialog__table table {
+  width: 100%;
+  border-collapse: collapse;
+  background: white;
+  border-radius: 6px;
+  overflow: hidden;
+}
+
+.ScreeningDialog__table thead {
+  background: var(--color-gray-2);
+  font-weight: 600;
+}
+
+.ScreeningDialog__table th,
+.ScreeningDialog__table td {
+  padding: 12px;
+  text-align: left;
+  font-size: var(--font-size-sm);
+  border-bottom: 1px solid var(--color-gray-2);
+}
+
+.ScreeningDialog__table th {
+  color: var(--color-gray-1);
+  font-weight: 600;
+}
+
+.ScreeningDialog__table tbody tr:hover {
+  background-color: var(--color-gray-3);
+}
+
+.ScreeningDialog__table tbody tr:last-child td {
+  border-bottom: none;
+}
+
+.ScreeningDialog__table td {
+  color: var(--color-gray-1);
+}
+
+.ScreeningDialog__error {
+  padding: 12px;
+  background: #fee;
+  border: 1px solid var(--color-red);
+  border-radius: 6px;
+  color: var(--color-red);
+}
+
+.ScreeningDialog__error p {
+  margin: 0;
+  font-size: var(--font-size-sm);
+}
+
+.ScreeningDialog__placeholder {
+  text-align: center;
+  color: var(--color-gray-1);
+  font-size: var(--font-size-sm);
+  margin: 0;
+  padding: 24px 12px;
+}
+
+/* Actions */
+.ScreeningDialog__actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 8px;
+  padding-top: 12px;
+  border-top: 1px solid var(--color-gray-2);
+}

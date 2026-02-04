@@ -1,6 +1,6 @@
 import { useQuery } from '@tanstack/react-query'
 
-const API_BASE = import.meta.env.VITE_API_BASE ?? 'https://supplier-hub-api-fha8daf4g7gzdhag.spaincentral-01.azurewebsites.net'
+const API_BASE = import.meta.env.VITE_API_BASE ?? ''
 const API_URL = `${API_BASE}/api/proveedor`
 
 function formatFecha(isoString) {

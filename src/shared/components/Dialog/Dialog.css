@@ -35,3 +35,9 @@ dialog[role="dialog"] {
         inline-size: 100%;
     }
 }
+
+dialog[role="dialog"].Dialog--large {
+    max-inline-size: 900px;
+    max-height: 90vh;
+    overflow-y: auto;
+}
