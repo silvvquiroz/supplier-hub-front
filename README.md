@@ -74,11 +74,6 @@ https://supplier-hub-front.vercel.app/?page=1&pageSize=5
 
 En Vercel se deben configurar las variables de entorno necesarias (por ejemplo `VITE_API_URL`) en el panel del proyecto antes de realizar un redeploy para asegurar que la aplicación apunte al backend correcto.
 
-Ejemplo rápido con `serve` para probar el build localmente:
-
-```bash
-npx serve -s dist
-```
 
 Consideraciones para producción
 -------------------------------
