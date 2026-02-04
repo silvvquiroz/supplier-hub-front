@@ -1,0 +1,222 @@
+:root {
+    --color-white: #FFF;
+    --color-black: #1d1d1f;
+
+    --color-blue: #06c;
+    --color-gray-1: #6e6e80;
+    --color-gray-2: #d9d9e3;
+    --color-gray-3: #ececf1;
+    --color-gray-4: #F5F5F7;
+    --color-red: #ff0000;
+
+    --font-family-extrabold: Manrope-ExtraBold, sans-serif;
+    --font-family-bold: Manrope-Bold, sans-serif;
+    --font-family-semibold: Manrope-Semibold, sans-serif;
+    --font-family-medium: Manrope-Medium, sans-serif;
+    --font-family-regular: Manrope-Regular, sans-serif;
+
+    --font-size-min: 14px;
+    --font-size-xs: .916em;
+    --font-size-sm: 1em;
+    --font-size-p: 1.167em;
+    --font-size-h6: 1.167em;
+    --font-size-h5: 1.333em;
+    --font-size-h4: 1.5em;
+    --font-size-h3: 1.667em;
+    --font-size-h2: 2em;
+    --font-size-h1: 2.333em;
+}
+
+@font-face {
+  font-family: Manrope-ExtraBold;
+  src: url(/fonts/manrope/Manrope-ExtraBold.ttf) format('truetype');
+  font-display: swap;
+}
+
+@font-face {
+  font-family: Manrope-Bold;
+  src: url(/fonts/manrope/Manrope-Bold.ttf) format('truetype');
+  font-display: swap;
+}
+
+@font-face {
+  font-family: Manrope-SemiBold;
+  src: url(/fonts/manrope/Manrope-SemiBold.ttf) format('truetype');
+  font-display: swap;
+}
+
+@font-face {
+  font-family: Manrope-Medium;
+  src: url(/fonts/manrope/Manrope-Medium.ttf) format('truetype');
+  font-display: swap;
+}
+
+@font-face {
+  font-family: Manrope-Regular;
+  src: url(/fonts/manrope/Manrope-Regular.ttf) format('truetype');
+  font-display: swap;
+}
+
+* {
+  margin-inline: 0;
+  margin-block: 0;
+  padding-inline: 0;
+  padding-block: 0;
+  box-sizing: border-box;
+  outline-color: var(--color-blue);
+}
+
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--color-gray-4);
+  border-radius: 5px;
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--color-gray-2);
+  border-radius: 5px;
+  transition: all .3s ease;
+}
+
+::-webkit-scrollbar-thumb:hover{
+  background: var(--color-gray-1);
+}
+
+::-webkit-scrollbar-corner {
+  background: var(--color-gray-2);
+}
+
+body {
+  position: relative;
+  font: var(--font-size-min)/1.2 var(--font-family-regular);
+  background: var(--color-white);
+  color: var(--color-black);
+  overflow-x: hidden;
+}
+
+h1, .h1{
+  font: var(--font-size-h1)/1.2 var(--font-family-bold);
+}
+
+h2, .h2{
+  font: var(--font-size-h2)/1.2 var(--font-family-bold);
+}
+
+h3, .h3{
+  font: var(--font-size-h3)/1.2 var(--font-family-bold);
+}
+
+h4, .h4{
+  font: var(--font-size-h4)/1.2 var(--font-family-bold);
+}
+
+h5, .h5{
+  font: var(--font-size-h5)/1.2 var(--font-family-bold);
+}
+
+h6, .h6{
+  font: var(--font-size-h6)/1.2 var(--font-family-bold);
+}
+
+p, .p{
+  font: var(--font-size-p)/1.2 var(--font-family-regular);
+  color: var(--color-gray-1);
+
+  > small{
+    font-size: var(--font-size-xs);
+  }
+}
+
+a, button{
+  font: inherit;
+  border: none;
+  background: none;
+  text-decoration: none;
+  color: inherit;
+  cursor: pointer;
+}
+
+main{
+  --main-padding-inline: 16px;
+
+  inline-size: 100%;
+  min-block-size: 100svh;
+  display: flex;
+  flex-flow: column wrap;
+  overflow-y: hidden;
+
+  & > menu{
+    border-bottom: 1px solid var(--color-gray-2);
+    padding-inline: var(--main-padding-inline);
+    padding-block: 8px;
+    display: flex;
+    flex-flow: row wrap;
+    justify-content: space-between;
+  }
+
+  & > section{
+    inline-size: 100%;
+    padding-inline: var(--main-padding-inline);
+    padding-block: 16px;
+    overflow-y: auto;
+    overflow-x: hidden;
+    display: flex;
+    flex-flow: column wrap;
+    gap: 24px;
+    flex-grow: 1;
+    min-inline-size: 0;
+
+    & > header{
+      inline-size: 100%;
+      display: flex;
+      flex-flow: column wrap;
+      gap: .5ch;
+    }
+
+    & > .Section__content{
+      inline-size: 100%;
+      display: flex;
+      flex-flow: row wrap;
+      gap: 12px;
+      min-inline-size: 0;
+      inline-size: 100%;
+
+      &[scroll-x]{
+        overflow-x: auto;
+        padding-block: 0 8px;
+        flex-flow: row nowrap;
+
+        > *{
+          min-inline-size: 140px;
+        }
+      }
+
+      & > form{
+        margin-inline: auto 0;
+        display: flex;
+        flex-flow: row wrap;
+        gap: 12px;
+      }
+    }
+  }
+
+  & > footer{
+    inline-size: 100%;
+    border-top: 1px solid var(--color-gray-2);
+    background: var(--color-gray-4);
+    padding-inline: var(--main-padding-inline);
+    padding-block: 8px;
+    display: grid;
+    place-items: center;
+  }
+}
+
+@media (min-width: 768px) {
+  main{
+    --main-padding-inline: 48px;
+  }
+}

@@ -1,0 +1,57 @@
+.Table{
+    inline-size: 100%;
+    border-radius: 8px;
+    border: 1px solid var(--color-gray-2);
+    padding-inline: 16px;
+    padding-block: 16px;
+    display: flex;
+    flex-flow: column wrap;
+    gap: 12px;
+
+    & > header{
+        inline-size: 100%;
+    }
+
+    & > .Table__scroll{
+        inline-size: 100%;
+        max-block-size: 40svh;
+        overflow-x: auto;
+    }
+
+    & > .Table__scroll > table{
+        inline-size: 100%;
+        min-inline-size: max-content;
+        border-collapse: collapse;
+        border-spacing: 0;
+
+        & > thead{
+            border-bottom: 1px solid var(--color-gray-2);
+        }
+
+        & > tbody{
+            background: var(--color-white);
+
+            > tr{
+                border-bottom: 1px solid var(--color-gray-2);
+
+                &:last-child{
+                    border-bottom: none;
+                }
+            }
+        }
+
+        & td{
+            color: var(--color-gray-1);
+        }
+
+        & :is(td, th){
+            padding-inline: 16px;
+            padding-block: 16px;
+            text-align: start;
+
+            &[data-center]{
+                text-align: center;
+            }
+        }
+    }
+}

@@ -1,0 +1,43 @@
+.Form{
+    --form-gap-inline: 12px;
+
+    display: flex;
+    flex-flow: row wrap;
+    gap: 12px;
+
+    & > *{
+        inline-size: 100%
+    }
+
+    > fieldset{
+        display: flex;
+        flex-flow: column wrap;
+        gap: 1ch;
+
+        &:has([type="submit"]){
+            padding-block: 8px 0;
+            inline-size: 100%;
+            flex-flow: row wrap;
+            justify-content: flex-end;
+        }
+
+        &:has(label){
+            gap: .5ch;
+        }
+
+        & > label{
+            font-size: var(--font-size-xs);
+            color: var(--color-gray-1);
+        }
+    }
+}
+
+fieldset{
+    border: none;
+}
+
+@media (min-width: 768px) {
+    .Form[data-columns="2"] > *{
+        inline-size: calc(50% - var(--form-gap-inline) / 2);
+    }
+}
