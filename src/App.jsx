@@ -1,13 +1,16 @@
 import { AddProviderDialog, Metric, ScreeningDialog, Table } from './shared/components'
 import { useProveedores } from './shared/hooks/useProveedores'
+import { useProvedoresCount } from './shared/hooks/useProvedoresCount'
+import { useDeleteProveedor } from './shared/hooks/useDeleteProveedor'
+import { EditIcon } from './shared/icons/EditIcon'
+import { DeleteIcon } from './shared/icons/DeleteIcon'
+import { ScreeningIcon } from './shared/icons/ScreeningIcon'
 import { useState } from 'react'
 
 const SUPPLIER_COLUMNS = [
   { key: 'razonSocial', label: 'Razon social' },
   { key: 'nombreComercial', label: 'Nombre comercial' },
   { key: 'nif', label: 'NIF' },
-  { key: 'telefono', label: 'Teléfono' },
-  { key: 'email', label: 'Correo electrónico' },
   { key: 'pais', label: 'País' },
   { key: 'facturacionAnual', label: 'Facturación anual en USD' },
   { key: 'fechaEdicion', label: 'Fecha última de edición' },
@@ -15,8 +18,36 @@ const SUPPLIER_COLUMNS = [
 ]
 
 function App() {
-  const { proveedores, isLoading, isError, error, totalPages, currentPage, pageSize } = useProveedores()
+  const { proveedores, isLoading, isError, error, totalPages, currentPage, pageSize, refetch } = useProveedores()
+  const { count: totalCount, isLoading: isLoadingCount } = useProvedoresCount()
+  const { deleteProveedor } = useDeleteProveedor()
   const [selectedProvider, setSelectedProvider] = useState({ id: null, name: null })
+  const [editingProvider, setEditingProvider] = useState(null)
+
+  const handleEditProveedor = (row) => {
+    setEditingProvider(row)
+    document.getElementById('AddProviderDialog')?.showPopover?.()
+  }
+
+  const handleAddProveedor = () => {
+    setEditingProvider(null)
+    document.getElementById('AddProviderDialog')?.showPopover?.()
+  }
+
+  const handleDeleteProveedor = async (row) => {
+    if (!window.confirm(`¿Está seguro que desea eliminar a ${row.razonSocial}?`)) {
+      return
+    }
+
+    try {
+      await deleteProveedor(row.id)
+      await refetch()
+      console.log('Proveedor eliminado y tabla refrescada')
+    } catch (err) {
+      console.error('Error al eliminar proveedor:', err)
+      alert('Error al eliminar el proveedor')
+    }
+  }
 
   const handleScreening = (provider) => {
     setSelectedProvider(provider)
@@ -32,25 +63,27 @@ function App() {
     <div style={{ display: 'flex', gap: '8px', justifyContent: 'center' }}>
       <button
         className="Button PrimaryButton Gray2BorderedButton"
-        popoverTarget="EditProviderDialog"
-        onClick={() => console.log('Edit:', row)}
+        onClick={() => handleEditProveedor(row)}
         title="Editar proveedor"
+        style={{ padding: '6px 10px' }}
       >
-        Editar
+        <EditIcon />
       </button>
       <button
         className="Button PrimaryButton Gray2BorderedButton"
-        onClick={() => console.log('Delete:', row)}
+        onClick={() => handleDeleteProveedor(row)}
         title="Eliminar proveedor"
+        style={{ padding: '6px 10px' }}
       >
-        Eliminar
+        <DeleteIcon />
       </button>
       <button
         className="Button PrimaryButton BlueButton"
         onClick={() => handleScreening({ id: row.id, name: row.razonSocial })}
         title="Ejecutar screening"
+        style={{ padding: '6px 10px' }}
       >
-        Screening
+        <ScreeningIcon />
       </button>
     </div>
   )
@@ -70,7 +103,13 @@ function App() {
           <p>Gestión integral de todos los proveedores registrados</p>
         </header>
         <div className="Section__content">
-          <AddProviderDialog />
+          <button
+            type="button"
+            className="Button PrimaryButton BlueButton"
+            onClick={handleAddProveedor}
+          >
+            <span>Añadir Proveedor</span>
+          </button>
           <form>
             <input type="search" placeholder="Buscar proveedor" />
             <select>
@@ -83,22 +122,11 @@ function App() {
             </select>
           </form>
         </div>
-        <div className="Section__content" data-scroll-x>
-          <Metric
-            title="Proveedores Totales"
-            value={isLoading ? '…' : String(proveedores.length)}
-            description="Proveedores activos en el sistema"
-          />
-          <Metric
-            title="Proveedores Totales"
-            value="100"
-            description="Proveedires activos en el sistema"
-          />
-          <Metric
-            title="Proveedores Totales"
-            value="100"
-            description="Proveedires activos en el sistema"
-          />
+        <div className="Section__content">
+          <div className="ProvidersSummary" style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+            <span>Proveedores activos en el sistema:</span>
+            <strong>{isLoadingCount ? '…' : String(totalCount)}</strong>
+          </div>
         </div>
         <div className="Section__content">
           {isError && (
@@ -117,6 +145,7 @@ function App() {
             renderAction={renderAction}
           />
         </div>
+        <AddProviderDialog proveedor={editingProvider} onClose={() => setEditingProvider(null)} />
         <ScreeningDialog provider={selectedProvider} onSubmit={handleScreeningSubmit} />
       </section>
       <footer>

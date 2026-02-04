@@ -29,6 +29,11 @@
             font-size: var(--font-size-xs);
             color: var(--color-gray-1);
         }
+
+        & > input,
+        & > select{
+            inline-size: 100%;
+        }
     }
 }
 

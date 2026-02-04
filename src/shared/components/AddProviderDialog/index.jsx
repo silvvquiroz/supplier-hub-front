@@ -1,10 +1,43 @@
 import { Dialog } from '../Dialog'
 import { useCreateProveedor } from '../../hooks/useCreateProveedor'
+import { useUpdateProveedor } from '../../hooks/useUpdateProveedor'
+import { usePaises } from '../../hooks/usePaises'
+import { useRef, useEffect } from 'react'
 
 const ADD_PROVIDER_DIALOG_ID = 'AddProviderDialog'
 
-export function AddProviderDialog() {
-  const { createProveedor, isPending, isError, error } = useCreateProveedor()
+export function AddProviderDialog({ proveedor = null, onClose = null }) {
+  const { createProveedor, isPending: isPendingCreate, isError: isErrorCreate, error: errorCreate } = useCreateProveedor()
+  const { updateProveedor, isPending: isPendingUpdate, isError: isErrorUpdate, error: errorUpdate } = useUpdateProveedor()
+  const { paises } = usePaises()
+  const formRef = useRef(null)
+  const isEditing = proveedor != null
+
+  const isPending = isEditing ? isPendingUpdate : isPendingCreate
+  const isError = isEditing ? isErrorUpdate : isErrorCreate
+  const error = isEditing ? errorUpdate : errorCreate
+
+  useEffect(() => {
+    if (isEditing && formRef.current) {
+      formRef.current.razonSocial.value = proveedor.razonSocial || ''
+      formRef.current.nombreComercial.value = proveedor.nombreComercial || ''
+      formRef.current.identificacionTributaria.value = proveedor.nif || ''
+      formRef.current.numeroTelefonico.value = proveedor.telefono || ''
+      formRef.current.correoElectronico.value = proveedor.email || ''
+      formRef.current.sitioWeb.value = proveedor.sitioWeb || ''
+      formRef.current.direccionFisica.value = proveedor.direccionFisica || ''
+      formRef.current.pais.value = proveedor.pais || ''
+      // facturacionAnual viene formateado con localeString, extraer solo números
+      const facNum = proveedor.facturacionAnual ? proveedor.facturacionAnual.replace(/\D/g, '') : ''
+      formRef.current.facturacionAnual.value = facNum
+    } else if (!isEditing && formRef.current) {
+      formRef.current.reset()
+    }
+  }, [proveedor, isEditing])
+
+  const handleDialogClose = () => {
+    if (onClose) onClose()
+  }
 
   async function handleSubmit(e) {
     e.preventDefault()
@@ -23,9 +56,14 @@ export function AddProviderDialog() {
       facturacionAnual: facturacionAnual ? Number(facturacionAnual) : 0,
     }
     try {
-      await createProveedor(payload)
+      if (isEditing) {
+        await updateProveedor({ id: proveedor.id, raw: payload })
+      } else {
+        await createProveedor(payload)
+      }
       form.reset()
       document.getElementById(ADD_PROVIDER_DIALOG_ID)?.hidePopover?.()
+      handleDialogClose()
     } catch (_err) {
       // Validation or API error: mutation sets isError / error, shown below the buttons
       // Do not reset form or close dialog so the user can correct and retry
@@ -34,15 +72,9 @@ export function AddProviderDialog() {
 
   return (
     <>
-      <button
-        type="button"
-        className="Button PrimaryButton BlueButton"
-        popoverTarget={ADD_PROVIDER_DIALOG_ID}
-      >
-        <span>Añadir Proveedor</span>
-      </button>
-      <Dialog id={ADD_PROVIDER_DIALOG_ID} title="Añadir Proveedor">
+      <Dialog id={ADD_PROVIDER_DIALOG_ID} title={isEditing ? 'Editar Proveedor' : 'Añadir Proveedor'}>
         <form
+          ref={formRef}
           className="Form"
           data-columns="2"
           onSubmit={handleSubmit}
@@ -103,6 +135,19 @@ export function AddProviderDialog() {
             />
           </fieldset>
           <fieldset>
+            <label htmlFor="pais">País</label>
+            <select id="pais" name="pais">
+              <option value="" disabled defaultValue="">
+                País
+              </option>
+              {paises.map((pais, idx) => (
+                <option key={idx} value={pais}>
+                  {pais}
+                </option>
+              ))}
+            </select>
+          </fieldset>
+          <fieldset>
             <label htmlFor="direccionFisica">Dirección física</label>
             <input
               id="direccionFisica"
@@ -110,17 +155,6 @@ export function AddProviderDialog() {
               name="direccionFisica"
               placeholder="Dirección física"
             />
-          </fieldset>
-          <fieldset>
-            <label htmlFor="pais">País</label>
-            <select id="pais" name="pais">
-              <option value="" disabled defaultValue="">
-                País
-              </option>
-              <option value="1">Perú</option>
-              <option value="2">USA</option>
-              <option value="3">España</option>
-            </select>
           </fieldset>
           <fieldset>
             <label htmlFor="facturacionAnual">Facturación anual en USD</label>
@@ -139,12 +173,15 @@ export function AddProviderDialog() {
               type="submit"
               disabled={isPending}
             >
-              {isPending ? 'Guardando…' : 'Guardar'}
+              {isPending ? (isEditing ? 'Actualizando…' : 'Guardando…') : (isEditing ? 'Actualizar' : 'Guardar')}
             </button>
             <button
               className="Button PrimaryButton RedButton"
               type="button"
-              popoverTarget={ADD_PROVIDER_DIALOG_ID}
+              onClick={() => {
+                document.getElementById(ADD_PROVIDER_DIALOG_ID)?.hidePopover?.()
+                handleDialogClose()
+              }}
             >
               Cancelar
             </button>
