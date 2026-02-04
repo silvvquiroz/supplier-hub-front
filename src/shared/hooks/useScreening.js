@@ -23,9 +23,26 @@ export function useScreening() {
       headers: { 'Content-Type': 'application/json' },
     })
 
+    // If the HTTP response itself is 404, report source unavailable
+    if (response.status === 404) {
+      let msg = 'Fuente no disponible debido a fallas externas'
+      try {
+        const body = await response.json()
+        msg = body?.message ?? msg
+      } catch (e) {
+        // ignore parse errors
+      }
+      return { items: [], numHits: 0, sourceUnavailable: true, sourceMessage: msg }
+    }
+
     if (!response.ok) throw new Error(`Error: ${response.statusText}`)
     const data = await response.json()
     console.log('[useScreening] OFAC response:', data)
+
+    // If backend indicates code 404 or there are zero hits, treat as 'no matches'
+    if (data && (data.code === 404 || data.code === '404' || data.numHits === 0)) {
+      return { items: [], numHits: data.numHits || 0, noMatches: true, noMatchesMessage: 'No se encontraron coincidencias' }
+    }
 
     // Mapear respuesta OFAC al formato esperado por la UI
     if (data.results && Array.isArray(data.results)) {
@@ -56,9 +73,23 @@ export function useScreening() {
       headers: { 'Content-Type': 'application/json' },
     })
 
+    // If HTTP 404, backend is unavailable
+    if (response.status === 404) {
+      let msg = 'Fuente no disponible debido a fallas externas'
+      try {
+        const body = await response.json()
+        msg = body?.message ?? msg
+      } catch (e) {}
+      return { items: [], numHits: 0, sourceUnavailable: true, sourceMessage: msg }
+    }
+
     if (!response.ok) throw new Error(`Error: ${response.statusText}`)
     const data = await response.json()
     console.log('[useScreening] World Bank response:', data)
+
+    if (data && (data.code === 404 || data.code === '404' || data.numHits === 0)) {
+      return { items: [], numHits: data.numHits || 0, noMatches: true, noMatchesMessage: 'No se encontraron coincidencias' }
+    }
 
     // Mapear respuesta World Bank al formato esperado por la UI
     if (data.results && Array.isArray(data.results)) {
@@ -87,9 +118,22 @@ export function useScreening() {
       headers: { 'Content-Type': 'application/json' },
     })
 
+    if (response.status === 404) {
+      let msg = 'Fuente no disponible debido a fallas externas'
+      try {
+        const body = await response.json()
+        msg = body?.message ?? msg
+      } catch (e) {}
+      return { items: [], numHits: 0, sourceUnavailable: true, sourceMessage: msg }
+    }
+
     if (!response.ok) throw new Error(`Error: ${response.statusText}`)
     const data = await response.json()
     console.log('[useScreening] OffShore Leaks response:', data)
+
+    if (data && (data.code === 404 || data.code === '404' || data.numHits === 0)) {
+      return { items: [], numHits: data.numHits || 0, noMatches: true, noMatchesMessage: 'No se encontraron coincidencias' }
+    }
 
     // Mapear respuesta OffShore Leaks al formato esperado por la UI
     if (data.results && Array.isArray(data.results)) {

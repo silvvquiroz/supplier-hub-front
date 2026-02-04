@@ -70,7 +70,7 @@ Uso de la plataforma — Despliegue en Vercel
 
 La aplicación está desplegada en Vercel. Acceso público:
 
-https://supplier-hub-front.vercel.app/?page=1&pageSize=5
+https://supplier-hub-front.vercel.app/?page=1&pageSize=4
 
 En Vercel se deben configurar las variables de entorno necesarias (por ejemplo `VITE_API_URL`) en el panel del proyecto antes de realizar un redeploy para asegurar que la aplicación apunte al backend correcto.
 

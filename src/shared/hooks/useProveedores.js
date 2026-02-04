@@ -54,7 +54,7 @@ function getSearchParams() {
   const params = new URLSearchParams(search)
   return {
     page: params.get('page') ?? '1',
-    pageSize: params.get('pageSize') ?? '5',
+    pageSize: params.get('pageSize') ?? '4',
   }
 }
 

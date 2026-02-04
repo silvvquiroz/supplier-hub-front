@@ -162,7 +162,19 @@ export function ScreeningDialog({ provider, onSubmit }) {
                   </div>
                 )}
 
-                {results[source.id] && !errors[source.id] && (
+                {results[source.id] && !errors[source.id] && results[source.id].sourceUnavailable && (
+                  <div className="ScreeningDialog__unavailable">
+                    <p>{results[source.id].sourceMessage ?? 'Fuente no disponible debido a fallas externas'}</p>
+                  </div>
+                )}
+
+                {results[source.id] && !errors[source.id] && results[source.id].noMatches && (
+                  <div className="ScreeningDialog__noMatches">
+                    <p>{results[source.id].noMatchesMessage ?? 'No se encontraron coincidencias'}</p>
+                  </div>
+                )}
+
+                {results[source.id] && !errors[source.id] && !results[source.id].sourceUnavailable && (
                   renderResults(source.id, results[source.id], source.columns)
                 )}
 
