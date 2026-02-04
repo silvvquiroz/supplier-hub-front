@@ -27,14 +27,6 @@ Requisitos previos
 - Node.js 18+ y npm o yarn instalados.
 - Acceso a la API backend (si aplica) y credenciales necesarias.
 
-Variables de entorno
---------------------
-
-Se recomienda exponer la URL de la API y otras variables de entorno con el prefijo `VITE_`. Ejemplo de archivo `.env` en la raíz del proyecto:
-
-```bash
-VITE_API_URL=https://api.example.com
-```
 
 Instalación
 -----------
@@ -86,10 +78,3 @@ Consideraciones para producción
 - Configurar políticas de cache y expiración para assets estáticos.
 - Proteger y rotar credenciales/variables de entorno en la plataforma de despliegue.
 - Verificar CORS en el backend para permitir las peticiones desde el dominio de producción.
-
-Mantenimiento y contacto
-------------------------
-
-Para cambios en dependencias o scripts revisar `package.json`. Para preguntas sobre el despliegue o integraciones con el backend, contactar al responsable del repositorio.
-
-— Fin
