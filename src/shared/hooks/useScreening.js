@@ -1,4 +1,6 @@
 export function useScreening() {
+  const apiBase = import.meta.env.VITE_API_BASE || ''
+
   const executeScreening = async (sourceId, providerName) => {
     if (sourceId === 'fuente3') {
       // OFAC
@@ -13,7 +15,7 @@ export function useScreening() {
   }
 
   const executeOFAC = async (providerName) => {
-    const url = `/api/proveedor/external/ofac/${providerName}`
+    const url = `${apiBase}/api/proveedor/external/ofac/${providerName}`
     console.log('[useScreening] OFAC request URL:', url, 'providerName:', providerName)
 
     const response = await fetch(url, {
@@ -77,7 +79,7 @@ export function useScreening() {
   }
 
   const executeOffShoreLeaks = async (providerName) => {
-    const url = `/api/proveedor/external/offshoreleaks/${providerName}`
+    const url = `${apiBase}/api/proveedor/external/offshoreleaks/${providerName}`
     console.log('[useScreening] OffShore Leaks request URL:', url, 'providerName:', providerName)
 
     const response = await fetch(url, {
