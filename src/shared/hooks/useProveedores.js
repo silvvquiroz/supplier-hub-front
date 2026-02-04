@@ -1,8 +1,6 @@
 import { useQuery } from '@tanstack/react-query'
 
-// In dev, Vite proxies /api to the backend (avoids CORS). In production, either
-// configure your host to proxy /api to the same backend or set VITE_API_BASE.
-const API_BASE = import.meta.env.VITE_API_BASE ?? ''
+const API_BASE = import.meta.env.VITE_API_BASE ?? 'https://supplier-hub-api-fha8daf4g7gzdhag.spaincentral-01.azurewebsites.net'
 const API_URL = `${API_BASE}/api/proveedor`
 
 function formatFecha(isoString) {
