@@ -3,13 +3,10 @@ export function useScreening() {
 
   const executeScreening = async (sourceId, providerName) => {
     if (sourceId === 'fuente3') {
-      // OFAC
       return executeOFAC(providerName)
     } else if (sourceId === 'fuente2') {
-      // World Bank
       return executeWorldBank(providerName)
     } else if (sourceId === 'fuente1') {
-      // OffShore Leaks
       return executeOffShoreLeaks(providerName)
     }
   }
@@ -23,15 +20,12 @@ export function useScreening() {
       headers: { 'Content-Type': 'application/json' },
     })
 
-    // If the HTTP response itself is 404, report source unavailable
     if (response.status === 404) {
       let msg = 'Fuente no disponible debido a fallas externas'
       try {
         const body = await response.json()
         msg = body?.message ?? msg
-      } catch (e) {
-        // ignore parse errors
-      }
+      } catch (e) {}
       return { items: [], numHits: 0, sourceUnavailable: true, sourceMessage: msg }
     }
 
@@ -39,7 +33,6 @@ export function useScreening() {
     const data = await response.json()
     console.log('[useScreening] OFAC response:', data)
 
-    // If backend indicates code 404 or there are zero hits, treat as 'no matches'
     if (data && (data.code === 404 || data.code === '404' || data.numHits === 0)) {
       return { items: [], numHits: data.numHits || 0, noMatches: true, noMatchesMessage: 'No se encontraron coincidencias' }
     }
@@ -63,7 +56,6 @@ export function useScreening() {
   }
 
   const executeWorldBank = async (providerName) => {
-    // Consulta a World Bank API local - instancia en localhost:8080
     const worldbankBaseUrl = import.meta.env.VITE_WORLDBANK_API || 'http://localhost:8080'
     const url = `${worldbankBaseUrl}/api/worldbank?entity=${providerName}`
     console.log('[useScreening] World Bank request URL:', url, 'providerName:', providerName)
@@ -73,7 +65,6 @@ export function useScreening() {
       headers: { 'Content-Type': 'application/json' },
     })
 
-    // If HTTP 404, backend is unavailable
     if (response.status === 404) {
       let msg = 'Fuente no disponible debido a fallas externas'
       try {

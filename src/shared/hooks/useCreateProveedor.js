@@ -4,10 +4,6 @@ import { AddProviderSchema } from '../schemas/addProviderSchema'
 const API_BASE = import.meta.env.VITE_API_BASE ?? ''
 const API_URL = `${API_BASE}/api/proveedor`
 
-/**
- * Validates raw form data with AddProviderSchema. Never calls the API.
- * @throws {Error} With user-facing message when validation fails.
- */
 function validateAddProviderPayload(raw) {
   const payload = {
     ...raw,
@@ -26,9 +22,6 @@ function validateAddProviderPayload(raw) {
   return result.data
 }
 
-/**
- * @param {z.infer<typeof AddProviderSchema>} body
- */
 async function postProveedor(body) {
   const res = await fetch(API_URL, {
     method: 'POST',

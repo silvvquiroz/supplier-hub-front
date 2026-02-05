@@ -43,7 +43,7 @@ const SCREENING_SOURCES = [
 ]
 
 export function ScreeningDialog({ provider, onSubmit }) {
-  const [activeTab, setActiveTab] = useState('fuente3') // Default a OFAC
+  const [activeTab, setActiveTab] = useState('fuente3')
   const [results, setResults] = useState({})
   const [loading, setLoading] = useState({})
   const [errors, setErrors] = useState({})
@@ -77,9 +77,7 @@ export function ScreeningDialog({ provider, onSubmit }) {
   const getResultCount = (sourceId) => {
     const result = results[sourceId]
     if (!result) return 0
-    // Nueva estructura: { items, numHits }
     if (result.numHits !== undefined) return result.numHits
-    // Fallback a estructura antigua
     if (Array.isArray(result)) return result.length
     if (result.data && Array.isArray(result.data)) return result.data.length
     return 1
@@ -87,10 +85,7 @@ export function ScreeningDialog({ provider, onSubmit }) {
 
   const renderResults = (sourceId, data, columns) => {
     if (!data) return null
-    
-    // Nueva estructura: { items, numHits }
     const items = data.items ? data.items : (Array.isArray(data) ? data : (data.data && Array.isArray(data.data) ? data.data : [data]))
-    
     if (items.length === 0) return null
 
     return (

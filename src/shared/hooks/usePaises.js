@@ -18,8 +18,6 @@ export function usePaises() {
 
         const data = await response.json()
         console.log('[usePaises] Response:', data)
-        
-        // Espera un array de países o un objeto con paises array
         const paisList = Array.isArray(data) ? data : (data.paises ?? [])
         setPaises(paisList)
       } catch (err) {

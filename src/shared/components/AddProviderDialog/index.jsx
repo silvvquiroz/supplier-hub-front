@@ -27,7 +27,6 @@ export function AddProviderDialog({ proveedor = null, onClose = null }) {
       formRef.current.sitioWeb.value = proveedor.sitioWeb || ''
       formRef.current.direccionFisica.value = proveedor.direccionFisica || ''
       formRef.current.pais.value = proveedor.pais || ''
-      // facturacionAnual viene formateado con localeString, extraer solo números
       const facNum = proveedor.facturacionAnual ? proveedor.facturacionAnual.replace(/\D/g, '') : ''
       formRef.current.facturacionAnual.value = facNum
     } else if (!isEditing && formRef.current) {
@@ -65,8 +64,6 @@ export function AddProviderDialog({ proveedor = null, onClose = null }) {
       document.getElementById(ADD_PROVIDER_DIALOG_ID)?.hidePopover?.()
       handleDialogClose()
     } catch (_err) {
-      // Validation or API error: mutation sets isError / error, shown below the buttons
-      // Do not reset form or close dialog so the user can correct and retry
     }
   }
 

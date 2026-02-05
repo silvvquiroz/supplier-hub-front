@@ -11,7 +11,6 @@ export function useDeleteProveedor() {
       headers: { 'Content-Type': 'application/json' },
     })
 
-    // 204 No Content is success for DELETE
     if (response.status === 204) {
       console.log('[useDeleteProveedor] DELETE success (204)')
       return null

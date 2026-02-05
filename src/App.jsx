@@ -55,7 +55,6 @@ function App() {
   }
 
   const handleScreeningSubmit = async (payload) => {
-    // Aquí puedes llamar a tu endpoint de screening
     console.log('Screening payload:', payload)
   }
 
